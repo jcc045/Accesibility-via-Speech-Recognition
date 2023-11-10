@@ -1,0 +1,5 @@
+Ask user if they want to enroll or authenticate -> wait 5 seconds -> default to authenticate
+
+Enroll -> ask the user their name -> ask the user to record their passcode -> ask the user to select their favorite color -> store all of these in the database
+
+Authenticate -> ask the user to say their passcode -> extract features and match with database -> display the user’s name and their favorite color
