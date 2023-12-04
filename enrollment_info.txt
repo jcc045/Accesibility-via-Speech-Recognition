@@ -1,0 +1,6 @@
+Color: #0080ff
+Audio File: data\Joe_enrollment_recording.wav
+
+Color: #ff0000
+Audio File: data\Ava_enrollment_recording.wav
+
