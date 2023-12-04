@@ -1,6 +1,9 @@
 import os
 import tkinter as tk
 from tkinter import colorchooser
+from tkinter import *
+from tkinter import ttk
+from tkmacosx import Button
 import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
@@ -20,6 +23,7 @@ class BiometricSystem:
     DATA_FOLDER = "data"
     ENROLLMENT_INFO_FILE = "enrollment_info.txt"
 
+    # Windows button format
     button_style = {'bg': '#3498db', 'fg': 'white', 'borderwidth': 2, 'relief': tk.GROOVE, 'font': ('Helvetica', 12)}
 
     def __init__(self, master):
@@ -33,7 +37,7 @@ class BiometricSystem:
         self.color = ""
         self.audio_data = None
 
-        # Adjust the threshold to trim the silence from our audio recordings
+        # Adjust the threshold to trim the silence from our audio recordings 
         self.silence_threshold_db = -46
 
         self.create_main_frame()
@@ -52,10 +56,10 @@ class BiometricSystem:
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
 
-        enroll_button = tk.Button(self.current_frame, text="Enroll", command=self.switch_to_name_frame, **self.button_style)
+        enroll_button = ttk.Button(self.current_frame, text="Enroll", command=self.switch_to_name_frame)
         enroll_button.pack(pady=20)
 
-        authenticate_button = tk.Button(self.current_frame, text="Authenticate", command=self.authenticate_action, **self.button_style)
+        authenticate_button = ttk.Button(self.current_frame, text="Authenticate", command=self.authenticate_action)
         authenticate_button.pack(pady=20)
 
     def switch_to_name_frame(self):
@@ -71,7 +75,7 @@ class BiometricSystem:
         self.name_entry = tk.Entry(self.current_frame, width=30)
         self.name_entry.pack(pady=5)
 
-        next_button = tk.Button(self.current_frame, text="Next", command=self.switch_to_color_frame, **self.button_style)
+        next_button = ttk.Button(self.current_frame, text="Next", command=self.switch_to_color_frame)
         next_button.pack(pady=20)
 
     def switch_to_color_frame(self):
@@ -89,10 +93,12 @@ class BiometricSystem:
         color_label = tk.Label(self.current_frame, text="Choose a Color:")
         color_label.pack(pady=5)
 
-        color_button = tk.Button(self.current_frame, text="Choose Color", command=self.choose_color)
+        color_button = ttk.Button(self.current_frame, text="Choose Color", command=self.choose_color)
         color_button.pack(pady=5)
 
-        next_button = tk.Button(self.current_frame, text="Next", command=self.switch_to_audio_frame, **self.button_style)
+        #self.choose_color
+
+        next_button = ttk.Button(self.current_frame, text="Next", command=self.switch_to_audio_frame)
         next_button.pack(pady=20)
 
     def switch_to_audio_frame(self):
@@ -102,13 +108,13 @@ class BiometricSystem:
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
 
-        prompt_label = tk.Label(self.current_frame, text=f"Please say the phrase: Two blue fish swam in the tank.")
+        prompt_label = tk.Label(self.current_frame, text=f"Please say a phrase\n Ex: Two blue fish swam in the tank.\n")
         prompt_label.pack(pady=10)
 
-        record_button = tk.Button(self.current_frame, text="Record Audio", command=self.record_audio, **self.button_style)
+        record_button = ttk.Button(self.current_frame, text="Record Audio", command=self.record_audio, )
         record_button.pack(pady=10)
 
-        stop_button = tk.Button(self.current_frame, text="Stop Recording", command=self.stop_recording, **self.button_style)
+        stop_button = ttk.Button(self.current_frame, text="Stop Recording", command=self.stop_recording)
         stop_button.pack(pady=10)
 
     def authenticate_action(self):
@@ -119,16 +125,16 @@ class BiometricSystem:
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
 
-        prompt_label = tk.Label(self.current_frame, text="Please say the phrase: Two blue fish swam in the tank.")
+        prompt_label = tk.Label(self.current_frame, text="Please say a phrase\n Ex: Two blue fish swam in the tank.\n")
         prompt_label.pack(pady=10)
 
-        record_button = tk.Button(self.current_frame, text="Record Audio", command=self.record_audio, **self.button_style)
+        record_button = ttk.Button(self.current_frame, text="Record Audio", command=self.record_audio)
         record_button.pack(pady=10)
 
-        stop_button = tk.Button(self.current_frame, text="Stop Recording", command=self.stop_recording_authenticate, **self.button_style)
+        stop_button = ttk.Button(self.current_frame, text="Stop Recording", command=self.stop_recording_authenticate)
         stop_button.pack(pady=10)
 
-        back_button = tk.Button(self.current_frame, text="Back", command=self.switch_to_main_frame, **self.button_style)
+        back_button = ttk.Button(self.current_frame, text="Back", command=self.switch_to_main_frame)
         back_button.pack(pady=10)
 
     def switch_to_main_frame(self):
@@ -178,7 +184,7 @@ class BiometricSystem:
 
     def record_audio(self):
         print(f"Recording...")
-        self.audio_data = sd.rec(44100 * 5, samplerate=44100, channels=2, dtype=np.int16)        
+        self.audio_data = sd.rec(44100 * 5, samplerate=44100, channels=1, dtype=np.int16)        
         sd.wait()
 
         # Trim silence using a threshold (adjust threshold as needed)
@@ -201,16 +207,6 @@ class BiometricSystem:
             self.current_frame.pack_forget()  # Hide the current frame
         self.create_main_frame()  # Show the main frame again
 
-    '''def record_audio_authenticate(self):
-        print(f"Recording...")
-        self.audio_data = sd.rec(44100 * 5, samplerate=44100, channels=2, dtype=np.int16)
-        sd.wait()
-
-        # Trim silence using a threshold (adjust threshold as needed)
-        trimmed_audio_data = self.trim_silence(self.audio_data, self.silence_threshold_db)
-
-        self.audio_data = trimmed_audio_data'''
-
     def stop_recording_authenticate(self):
         sd.stop()
 
@@ -227,27 +223,7 @@ class BiometricSystem:
             self.display_matched_user_frame(matched_user, matched_color)
         else:
             print("Authentication failed. Please try again.")    
-
-    '''
-    def check_if_user_exists(self, name):
-        with open(os.path.join(self.DATA_FOLDER, self.ENROLLMENT_INFO_FILE), 'r') as file:
-            lines = file.readlines()
-            
-            #Iterate over lines with step 3 to handle each user's information
-            for i in range(0, len(lines), 3):
-
-                audio_file_line = lines[i + 1].strip()
-
-                if audio_file_line.startswith("Audio File:"):
-                    # Extract user information
-                    user_audio_file = audio_file_line.split(":")[1].strip()
-                    user = os.path.basename(user_audio_file).split("_")[0].strip()
-                    if user == name:
-                        return True
-            return False
-    '''
-
-           
+ 
 
     def match_recordings(self, audio_data, threshold):
         max_similarity = -1
@@ -319,5 +295,9 @@ class BiometricSystem:
 
 if __name__ == "__main__":
     root = tk.Tk()
+    style = ttk.Style()
+    style.theme_use('alt')
+    style.configure('TButton', background = '#3498db', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
+    style.map('TButton', background=[('active','#3498db')])
     app = BiometricSystem(root)
     root.mainloop()
