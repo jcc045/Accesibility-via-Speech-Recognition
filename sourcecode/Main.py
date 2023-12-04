@@ -3,6 +3,8 @@ from tkinter import ttk
 from gui import BiometricSystem
 
 if __name__ == "__main__":
+
+    # Change default ttk style for buttons
     root = tk.Tk()
     style = ttk.Style()
     style.theme_use('alt')

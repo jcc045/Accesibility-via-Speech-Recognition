@@ -10,9 +10,7 @@ import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
 import warnings
-
 warnings.filterwarnings("ignore")
-
 
 class BiometricSystem:
     DATA_FOLDER = "data"
@@ -29,6 +27,7 @@ class BiometricSystem:
         self.color = ""
         self.audio_data = None
 
+        # Adjust the threshold for the silence of the audio (Should be between -40 and -50)
         self.silence_threshold_db = -46
 
         # Adjust the threshold for the match scores
@@ -37,11 +36,13 @@ class BiometricSystem:
         self.create_main_frame()
 
     def create_data_folder(self):
+
         # Create the data folder if it doesn't exist
         if not os.path.exists(self.DATA_FOLDER):
             os.makedirs(self.DATA_FOLDER)
 
     def create_main_frame(self):
+
         self.create_data_folder()
 
         if self.current_frame:
@@ -57,8 +58,10 @@ class BiometricSystem:
         authenticate_button.pack(pady=20)
 
     def switch_to_name_frame(self):
+
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
 
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
@@ -73,10 +76,13 @@ class BiometricSystem:
         next_button.pack(pady=20)
 
     def switch_to_color_frame(self):
-        self.name_value = self.name_entry.get()  # Store the name value
 
+        # Store the name value
+        self.name_value = self.name_entry.get()
+
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
 
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
@@ -91,8 +97,10 @@ class BiometricSystem:
         next_button.pack(pady=20)
 
     def switch_to_audio_frame(self):
+
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
 
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
@@ -127,8 +135,10 @@ class BiometricSystem:
         back_button.pack(pady=10)
 
     def switch_to_main_frame(self):
+
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
         self.create_main_frame()
 
     def record_audio(self):
@@ -153,9 +163,12 @@ class BiometricSystem:
         with open(os.path.join(self.DATA_FOLDER, self.ENROLLMENT_INFO_FILE), 'a') as file:
             file.write(f"Color: {self.color}\nAudio File: {filename}\n\n")
 
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
-        self.create_main_frame()  # Show the main frame again
+            self.current_frame.pack_forget()
+
+        # Show the main frame again
+        self.create_main_frame()
 
     def stop_recording_authenticate(self):
         sd.stop()
@@ -168,10 +181,12 @@ class BiometricSystem:
 
         if matched_user:
             print(f"Authentication successful! Welcome, {matched_user}.")
+
             # Display the matched username frame
             display_matched_user_frame(self.current_frame, matched_user, matched_color)
         else:
             print("Authentication failed. Please try again.")
 
+    # Open the color selection wheel and save the result in self.color
     def choose_color(self):
         _, self.color = colorchooser.askcolor(title="Choose a color")

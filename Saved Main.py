@@ -63,8 +63,10 @@ class BiometricSystem:
         authenticate_button.pack(pady=20)
 
     def switch_to_name_frame(self):
+
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
 
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
@@ -79,10 +81,12 @@ class BiometricSystem:
         next_button.pack(pady=20)
 
     def switch_to_color_frame(self):
-        self.name_value = self.name_entry.get()  # Store the name value
+        # Store the name value
+        self.name_value = self.name_entry.get()
 
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
 
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
@@ -93,15 +97,14 @@ class BiometricSystem:
         color_button = ttk.Button(self.current_frame, text="Choose Color", command=self.choose_color)
         color_button.pack(pady=5)
 
-        #self.choose_color
-
         next_button = ttk.Button(self.current_frame, text="Next", command=self.switch_to_audio_frame)
         next_button.pack(pady=20)
 
     def switch_to_audio_frame(self):
-        if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
 
+        # Hide the current frame
+        if self.current_frame:
+            self.current_frame.pack_forget()
         self.current_frame = tk.Frame(self.master)
         self.current_frame.pack()
 
@@ -135,8 +138,10 @@ class BiometricSystem:
         back_button.pack(pady=10)
 
     def switch_to_main_frame(self):
+
+        # Hide the current frame
         if self.current_frame:
-            self.current_frame.pack_forget()  # Hide the current frame
+            self.current_frame.pack_forget()
         self.create_main_frame()
 
     def display_matched_user_frame(self, matched_user, user_color):
@@ -153,6 +158,7 @@ class BiometricSystem:
         self.master.after(10000, lambda: self.temp_frame(matched_user_frame))
 
     def temp_frame(self, frame_to_destroy):
+
         # Destroy the frame used for displaying the matched username
         frame_to_destroy.destroy()
 
@@ -160,19 +166,14 @@ class BiometricSystem:
         _, self.color = colorchooser.askcolor(title="Choose a color")
         
     def trim_silence(self, audio_data, threshold_db):
-        # Convert numpy array to PyDub AudioSegment
-        audio_segment = AudioSegment(
-            audio_data.tobytes(),
-            frame_rate=44100,  # Adjust the frame rate according to your audio data
-            sample_width=audio_data.dtype.itemsize,
-            channels=len(audio_data.shape)
-        )
 
-        # Use PyDub's built-in silence trimming
-        trimmed_audio_segment = audio_segment.strip_silence(
-            silence_thresh=threshold_db,  # Adjust threshold based on your needs
-            silence_len=500  # Adjust the minimum silence duration as needed
-        )
+        # Convert numpy array to PyDub AudioSegment
+        # Adjust the frame rate according to your audio data
+        audio_segment = AudioSegment(audio_data.tobytes(), frame_rate=44100, sample_width=audio_data.dtype.itemsize, channels=len(audio_data.shape))
+
+        # Use PyDub's built-in silence trimming adjust threshold based on your needs
+        # Adjust the minimum silence duration as needed
+        trimmed_audio_segment = audio_segment.strip_silence(silence_thresh=threshold_db, silence_len=500)
 
         # Convert the trimmed AudioSegment back to numpy array
         trimmed_audio_data = np.array(trimmed_audio_segment.get_array_of_samples()).reshape(-1, audio_data.shape[1])
@@ -180,6 +181,7 @@ class BiometricSystem:
         return trimmed_audio_data
 
     def record_audio(self):
+
         print(f"Recording...")
         self.audio_data = sd.rec(44100 * 5, samplerate=44100, channels=1, dtype=np.int16)        
         sd.wait()
@@ -200,9 +202,12 @@ class BiometricSystem:
         with open(os.path.join(self.DATA_FOLDER, self.ENROLLMENT_INFO_FILE), 'a') as file:
             file.write(f"Color: {self.color}\nAudio File: {filename}\n\n")
 
+        # Hide the current frame
         if self.current_frame:
             self.current_frame.pack_forget()  # Hide the current frame
-        self.create_main_frame()  # Show the main frame again
+        
+        # Show the main frame again
+        self.create_main_frame()
 
     def stop_recording_authenticate(self):
         sd.stop()
@@ -214,9 +219,12 @@ class BiometricSystem:
         matched_user, matched_color = self.match_recordings(self.audio_data, self.match_threshold)
 
         if matched_user:
+
             print(f"Authentication successful! Welcome, {matched_user}.")
+            
             # Display the matched username frame
             self.display_matched_user_frame(matched_user, matched_color)
+
         else:
             print("Authentication failed. Please try again.")    
  
@@ -248,6 +256,7 @@ class BiometricSystem:
                     print(similarity)
                     print("\n\n")
 
+                    # If the similarity score of user is >= threshold and > max_similarity
                     if similarity >= threshold and similarity > max_similarity:
                         max_similarity = similarity
                         matched_user = os.path.basename(user_audio_file).split("_")[0].strip()
@@ -255,6 +264,7 @@ class BiometricSystem:
 
         return matched_user, matched_color
     
+    # Use VGG19 to compare the plotted MFCC features of each audi file
     def compare_audio(self, saved_audio_data, audio_data):
         saved_waveform, saved_sample_rate = torchaudio.load(saved_audio_data)
         mfcc_transform = T.MFCC()
