@@ -1,6 +1,18 @@
-Color: #5548f9
-Audio File: data\Joe_enrollment_recording.wav
+Color: #0000ff
+Audio File: data\Joseph_enrollment_recording.wav
 
-Color: #00ff00
-Audio File: data\Owen_enrollment_recording.wav
+Color: #6900d2
+Audio File: data\Elon_enrollment_recording.wav
+
+Color: #ff8000
+Audio File: data\Michelle_enrollment_recording.wav
+
+Color: #0bf411
+Audio File: data\Morgan_enrollment_recording.wav
+
+Color: #df07f8
+Audio File: data\Steve_enrollment_recording.wav
+
+Color: #00ffff
+Audio File: data\Taylor_enrollment_recording.wav
 
