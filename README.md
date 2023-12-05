@@ -1,13 +1,32 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/QL3bmW4P)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12835710&assignment_repo_type=AssignmentRepo)
-# CS379F23-Project (Open ideas)
+# Biometric System - Speaker Identification
 
-## Instructions
+## Overview
+This biometric system implements speaker identification using voice recordings. Users can enroll by recording their voice, and the system authenticates individuals based on their unique voice characteristics. The program is developed in Python and utilizes the Tkinter library for the graphical user interface.
 
-Please [click here to see the detailed google document](https://docs.google.com/document/d/1ENeze60Esmabz6vWo7Hfej4e1kSMGTHMWu6HYMkflX4/edit?usp=sharing)
+## Features
+- **Enrollment:** Users can enroll by providing their name, selecting a color preference, and recording an enrollment phrase.
+- **Authentication:** The system authenticates users by comparing recorded voice samples with enrolled voice samples.
+- **User Interface:** A user-friendly Tkinter GUI facilitates easy interaction, making the system accessible to all users.
 
-## Literature Review Report Template
+## Installation
+1. Ensure Python is installed on your system.
+2. Install required dependencies using: `pip install -r requirements.txt`
 
-[click here to see Literature Review Report Template](https://docs.google.com/document/d/1eoWzLTMzrPC5Rs4kDbHFSGodwr5nmACT-R40rvPwxLI/edit?usp=sharing)
+## How to Run
+Execute the program by running `python main.py` in the terminal or command prompt.
 
+## Usage
+1. Click "Enroll" to register a new user.
+2. Enter your name, choose a color, and record an enrollment phrase.
+3. Click "Authenticate" to verify identity. Record the authentication phrase when prompted.
+4. The system displays the username of the authenticated user in the color they chose.
+
+## Dependencies
+- Tkinter
+- Sounddevice
+- Numpy
+- Scipy
+- Torch
+- Torchaudio
+- Pydub
 

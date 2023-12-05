@@ -1,0 +1,9 @@
+matplotlib==3.5.3
+numpy==1.25.2
+pydub==0.25.1
+scipy==1.11.4
+sounddevice==0.4.6
+tkmacosx==1.0.5
+torch==2.1.1
+torchaudio==2.1.1
+torchvision==0.16.1
