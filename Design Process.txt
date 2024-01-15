@@ -1,7 +1,0 @@
-Originally tried to use the SpeechRecognition library until we realized it was only to transcribe text.
-To create a more secure system, moved on to a speaker indetification approach
-Originally tried to use Cosine Difference and similarity on the waveform etracted with torchaudio
-THis was giving weird padding issues so the final rendition involves extracting the MFCC features from the two audio files, Plotting 
-them, and then using VGG19 to compare the two images.
-
-Citation: OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
